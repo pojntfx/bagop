@@ -78,8 +78,8 @@ func main() {
 	pflag.Usage = func() {
 		fmt.Printf(`Build for all Go-supported platforms by default, disable those which you don't want.
 
-Example usage: %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j $(nproc) 'main.go'
-Example usage (with plain flag): %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j $(nproc) -p 'go build -o $DST main.go'
+Example usage: %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j "$(nproc)" 'main.go'
+Example usage (with plain flag): %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j "$(nproc)" -p 'go build -o $DST main.go'
 
 See https://github.com/pojntfx/bagop for more information.
 
