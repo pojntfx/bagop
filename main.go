@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"sync"
 
 	"github.com/alessio/shellescape"
@@ -56,17 +57,34 @@ func getArchIdentifier(goArch string) string {
 	}
 }
 
+func getSystemShell() []string {
+	// For Windows, use PowerShell
+	if runtime.GOOS == "windows" {
+		return []string{"powershell", "-command"}
+	}
+
+	// Prefer Bash
+	bash, err := exec.LookPath("bash")
+	if err == nil {
+		return []string{bash, "-c"}
+	}
+
+	// Fall back to POSIX shell
+	return []string{"sh", "-c"}
+}
+
 func main() {
 	// Define usage
 	pflag.Usage = func() {
 		fmt.Printf(`Build for all Go-supported platforms by default, disable those which you don't want.
 
-Example usage: %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j $(nproc) main.go
+Example usage: %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j $(nproc) 'main.go'
+Example usage (with plain flag): %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j $(nproc) -p 'go build -o $DST main.go'
 
 See https://github.com/pojntfx/bagop for more information.
 
-Usage: %s [OPTION...] <INPUT>
-`, os.Args[0], os.Args[0])
+Usage: %s [OPTION...] '<INPUT>'
+`, os.Args[0], os.Args[0], os.Args[0])
 
 		pflag.PrintDefaults()
 	}
@@ -78,12 +96,13 @@ Usage: %s [OPTION...] <INPUT>
 	extraArgs := pflag.StringP("extra-args", "e", "", "Extra arguments to pass to the Go compiler")
 	jobsFlag := pflag.Int64P("jobs", "j", 1, "Maximum amount of parallel jobs")
 	goismsFlag := pflag.BoolP("goisms", "g", false, "Use Go's conventions (i.e. amd64) instead of uname's conventions (i.e. x86_64)")
+	plainFlag := pflag.BoolP("plain", "p", false, "Sets GOARCH, GOARCH and DST and leaves the rest up to you (see example usage)")
 
 	pflag.Parse()
 
 	// Validate arguments
 	if pflag.NArg() == 0 {
-		help := `command needs an argument: INPUT`
+		help := `command needs an argument: 'INPUT'`
 
 		fmt.Println(help)
 
@@ -175,9 +194,19 @@ Usage: %s [OPTION...] <INPUT>
 			// Construct build command
 			buildCmd := exec.Command(goCmd, buildArgs...)
 
+			// If the plain flag is set, use the custom command
+			if *plainFlag {
+				buildCmd = exec.Command(getSystemShell()[0], []string{getSystemShell()[1], input}...)
+			}
+
 			// Set `GOOS` and `GOARCH` env vars
 			buildCmd.Env = os.Environ()
 			buildCmd.Env = append(buildCmd.Env, "GOOS="+shellescape.Quote(platform.GoOS), "GOARCH="+shellescape.Quote(platform.GoArch))
+
+			// If the plain flag is set, also set DST
+			if *plainFlag {
+				buildCmd.Env = append(buildCmd.Env, "DST="+shellescape.Quote(output))
+			}
 
 			// Capture stdout and stderr
 			var buildStdout, buildStderr bytes.Buffer
