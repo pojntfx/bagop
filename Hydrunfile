@@ -1,0 +1,3 @@
+#!/bin/bash
+
+go run main.go -j "$(nproc)" -b bagop -x '(android/*|ios/*|openbsd/mips64)' main.go
