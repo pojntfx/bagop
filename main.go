@@ -165,9 +165,14 @@ Usage: %s [OPTION...] '<INPUT>'
 			output += getBinIdentifier(platform.GoOS, platform.GoArch)
 
 			// Check if current platform should be skipped
-			skip, err := regexp.MatchString(*excludeFlag, platform.GoOS+"/"+platform.GoArch)
-			if err != nil {
-				log.Fatal("could not match check if platform should be blocked based on regex:", err)
+			skip := false
+			if *excludeFlag != "" {
+				iskip, err := regexp.MatchString(*excludeFlag, platform.GoOS+"/"+platform.GoArch)
+				if err != nil {
+					log.Fatal("could not match check if platform should be blocked based on regex:", err)
+				}
+
+				skip = iskip
 			}
 
 			// Skip the platform if it matches the exclude regex
