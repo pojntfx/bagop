@@ -2,6 +2,10 @@
 
 Build for all Go-supported platforms by default, disable those which you don't want.
 
+[![hydrun CI](https://github.com/pojntfx/bagop/actions/workflows/hydrun.yaml/badge.svg)](https://github.com/pojntfx/bagop/actions/workflows/hydrun.yaml)
+[![Matrix](https://img.shields.io/matrix/bagop:matrix.org)](https://matrix.to/#/#bagop:matrix.org?via=matrix.org)
+[![Binary Downloads](https://img.shields.io/github/downloads/pojntfx/bagop/total?label=binary%20downloads)](https://github.com/pojntfx/bagop/releases)
+
 ## Overview
 
 bagop is a simple build tool for Go which tries to build your app for all platforms supported by Go by default. Instead of manually adding specific `GOOS`es and `GOARCH`es, bagop builds for all valid targets by default, and gives you the choice to disable those which you don't want to support or which can't be supported.
@@ -46,7 +50,7 @@ func main() {
 }
 ```
 
-We could now start to manually (cross-)compile by running `go build -o hello-world main.go` and setting `GOOS` or `GOARCH`, a process which can be simplified by using bagop. To build `hello-world` for all Go-supported platforms, simply run:
+We could now start to manually (cross-)compile by running `go build -o hello-world main.go` and setting `GOOS` or `GOARCH`, or use simplified process with bagop. To build `hello-world` for all Go-supported platforms, simply run:
 
 ```shell
 $ bagop -b hello-world main.go
@@ -137,7 +141,7 @@ $  ldd out/hello-world.linux-x86_64
 
 If you're enjoying bagop, the following projects might also be of help to you too:
 
-- Also want to test these cross-compile binaries? Check out [hydrun](https://github.com/pojntfx/hydrun)!
+- Also want to test these cross-compiled binaries? Check out [hydrun](https://github.com/pojntfx/hydrun)!
 - Need to cross-compile CGo? Check out [xgo](https://github.com/crazy-max/xgo)!
 - Want to build fully-featured desktop GUI for all these platforms without CGo? Check out [Lorca](https://github.com/zserge/lorca)!
 - Want to use SQLite without CGo? Check out [cznic/sqlite](https://gitlab.com/cznic/sqlite)!
@@ -162,6 +166,20 @@ Usage: bagop [OPTION...] '<INPUT>'
   -j, --jobs int            Maximum amount of parallel jobs (default 1)
   -p, --plain               Sets GOARCH, GOARCH and DST and leaves the rest up to you (see example usage)
 ```
+
+## Contributing
+
+To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
+To build bagop locally, run:
+
+```shell
+$ git clone https://github.com/pojntfx/bagop.git
+$ cd bagop
+$ go run main.go --help
+```
+
+Have any questions or need help? Chat with us [on Matrix](https://matrix.to/#/#bagop:matrix.org?via=matrix.org)!
 
 ## License
 
