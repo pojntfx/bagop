@@ -142,7 +142,7 @@ $  ldd out/hello-world.linux-x86_64
 If you're enjoying bagop, the following projects might also be of help to you too:
 
 - Also want to test these cross-compiled binaries? Check out [hydrun](https://github.com/pojntfx/hydrun)!
-- Need to cross-compile CGo? Check out [xgo](https://github.com/crazy-max/xgo)!
+- Need to cross-compile CGo? Check out [bagccgop](https://github.com/pojntfx/bagccgop)!
 - Want to build fully-featured desktop GUI for all these platforms without CGo? Check out [Lorca](https://github.com/zserge/lorca)!
 - Want to use SQLite without CGo? Check out [cznic/sqlite](https://gitlab.com/cznic/sqlite)!
 
@@ -152,8 +152,8 @@ If you're enjoying bagop, the following projects might also be of help to you to
 $ bagop --help
 Build for all Go-supported platforms by default, disable those which you don't want.
 
-Example usage: bagop -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j "$(nproc)" 'main.go'
-Example usage (with plain flag): bagop -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j "$(nproc)" -p 'go build -o $DST main.go'
+Example usage: bagop -b mybin -x '(android/arm|ios/*|openbsd/mips64)' -j "$(nproc)" 'main.go'
+Example usage (with plain flag): bagop -b mybin -x '(android/arm|ios/*|openbsd/mips64)' -j "$(nproc)" -p 'go build -o $DST main.go'
 
 See https://github.com/pojntfx/bagop for more information.
 
@@ -165,6 +165,7 @@ Usage: bagop [OPTION...] '<INPUT>'
   -g, --goisms              Use Go's conventions (i.e. amd64) instead of uname's conventions (i.e. x86_64)
   -j, --jobs int            Maximum amount of parallel jobs (default 1)
   -p, --plain               Sets GOARCH, GOARCH and DST and leaves the rest up to you (see example usage)
+  -v, --verbose             Enable logging of executed commands
 ```
 
 ## Contributing
