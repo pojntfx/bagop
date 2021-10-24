@@ -78,8 +78,8 @@ func main() {
 	pflag.Usage = func() {
 		fmt.Printf(`Build for all Go-supported platforms by default, disable those which you don't want.
 
-Example usage: %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j "$(nproc)" 'main.go'
-Example usage (with plain flag): %s -b mybin -x '(android/arm$|ios/*|openbsd/mips64)' -j "$(nproc)" -p 'go build -o $DST main.go'
+Example usage: %s -b mybin -x '(android/arm|ios/*|openbsd/mips64)' -j "$(nproc)" 'main.go'
+Example usage (with plain flag): %s -b mybin -x '(android/arm|ios/*|openbsd/mips64)' -j "$(nproc)" -p 'go build -o $DST main.go'
 
 See https://github.com/pojntfx/bagop for more information.
 
@@ -97,6 +97,7 @@ Usage: %s [OPTION...] '<INPUT>'
 	jobsFlag := pflag.Int64P("jobs", "j", 1, "Maximum amount of parallel jobs")
 	goismsFlag := pflag.BoolP("goisms", "g", false, "Use Go's conventions (i.e. amd64) instead of uname's conventions (i.e. x86_64)")
 	plainFlag := pflag.BoolP("plain", "p", false, "Sets GOARCH, GOARCH and DST and leaves the rest up to you (see example usage)")
+	verboseFlag := pflag.BoolP("verbose", "v", false, "Enable logging of executed commands")
 
 	pflag.Parse()
 
@@ -123,6 +124,11 @@ Usage: %s [OPTION...] '<INPUT>'
 	var queryStdout, queryStderr bytes.Buffer
 	queryCmd.Stdout = &queryStdout
 	queryCmd.Stderr = &queryStderr
+
+	// Log the command if requested
+	if *verboseFlag {
+		log.Println(queryCmd)
+	}
 
 	// Get supported platforms
 	if err := queryCmd.Run(); err != nil {
@@ -217,6 +223,11 @@ Usage: %s [OPTION...] '<INPUT>'
 			var buildStdout, buildStderr bytes.Buffer
 			buildCmd.Stdout = &buildStdout
 			buildCmd.Stderr = &buildStderr
+
+			// Log the command if requested
+			if *verboseFlag {
+				log.Println(buildCmd)
+			}
 
 			// Start the build
 			if err := buildCmd.Run(); err != nil {
