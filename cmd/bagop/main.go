@@ -13,7 +13,6 @@ import (
 	"sync"
 
 	"github.com/alessio/shellescape"
-	"github.com/fatih/color"
 	"github.com/spf13/pflag"
 )
 
@@ -183,13 +182,13 @@ Usage: %s [OPTION...] '<INPUT>'
 
 			// Skip the platform if it matches the exclude regex
 			if skip {
-				log.Printf("%v %v/%v (platform matched the provided regex)", color.New(color.FgYellow).SprintFunc()("skipping"), color.New(color.FgCyan).SprintFunc()(platform.GoOS), color.New(color.FgMagenta).SprintFunc()(platform.GoArch))
+				log.Printf("%v %v/%v (platform matched the provided regex)", "skipping", platform.GoOS, platform.GoArch)
 
 				return
 			}
 
 			// Continue if platform is enabled
-			log.Printf("%v %v/%v (%v)", color.New(color.FgGreen).SprintFunc()("building"), color.New(color.FgCyan).SprintFunc()(platform.GoOS), color.New(color.FgMagenta).SprintFunc()(platform.GoArch), output)
+			log.Printf("%v %v/%v (%v)", "building", platform.GoOS, platform.GoArch, output)
 
 			// Construct build args
 			buildArgs := append([]string{"build", "-o"}, []string{shellescape.Quote(output)}...)

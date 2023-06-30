@@ -1,3 +1,35 @@
 #!/bin/bash
 
-CGO_ENABLED=0 go run main.go -j "$(nproc)" -b bagop -x '(android/*|ios/*|openbsd/mips64)' -p "go build -a -ldflags '-extldflags \"-static\"' -o \$DST main.go"
+set -e
+
+# Test
+if [ "$1" = "test" ]; then
+  # Configure Git
+  git config --global --add safe.directory '*'
+
+  # Generate dependencies
+  make depend
+
+  # Run tests
+  make test
+
+  exit 0
+fi
+
+# Go
+if [ "$1" = "go" ]; then
+  # Install native dependencies
+  apt update
+  apt install -y curl make
+
+  # Configure Git
+  git config --global --add safe.directory '*'
+
+  # Generate dependencies
+  make depend
+
+  # Build
+  CGO_ENABLED=0 go run ./cmd/bagop/main.go -j "$(nproc)" -b "$2" -x '(android/*|ios/*|openbsd/mips64)' -p "make build/$2 DST=\$DST" -d out
+
+  exit 0
+fi

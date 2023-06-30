@@ -177,13 +177,13 @@ To build bagop locally, run:
 ```shell
 $ git clone https://github.com/pojntfx/bagop.git
 $ cd bagop
-$ go run main.go --help
+$ go run ./cmd/bagop/main.go --help
 ```
 
 Have any questions or need help? Chat with us [on Matrix](https://matrix.to/#/#bagop:matrix.org?via=matrix.org)!
 
 ## License
 
-bagop (c) 2021 Felicitas Pojtinger and contributors
+bagop (c) 2023 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: AGPL-3.0
