@@ -4,7 +4,6 @@ Build for all Go-supported platforms by default, disable those which you don't w
 
 [![hydrun CI](https://github.com/pojntfx/bagop/actions/workflows/hydrun.yaml/badge.svg)](https://github.com/pojntfx/bagop/actions/workflows/hydrun.yaml)
 [![Matrix](https://img.shields.io/matrix/bagop:matrix.org)](https://matrix.to/#/#bagop:matrix.org?via=matrix.org)
-[![Binary Downloads](https://img.shields.io/github/downloads/pojntfx/bagop/total?label=binary%20downloads)](https://github.com/pojntfx/bagop/releases)
 
 ## Overview
 
@@ -184,6 +183,6 @@ Have any questions or need help? Chat with us [on Matrix](https://matrix.to/#/#b
 
 ## License
 
-bagop (c) 2023 Felicitas Pojtinger and contributors
+bagop (c) 2024 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: AGPL-3.0
