@@ -35,7 +35,7 @@ PS> Invoke-WebRequest https://github.com/pojntfx/bagop/releases/latest/download/
 
 You can find binaries for more operating systems and architectures on [GitHub releases](https://github.com/pojntfx/bagop/releases).
 
-## Usage
+## Tutorial
 
 Let's assume we have a Go app called `hello-world` and we want to build it for as many platforms as possible using bagop. This is the `main.go`:
 
